@@ -39,8 +39,12 @@ const formatPrometheusMetrics = (body) => {
       tmp = line.match(/^([\w_]+)(?:\{(.*)\})?\x20(.+)/)
       if (tmp && tmp.length > 1) {
         let [_, metricName, labels, value] = tmp // eslint-disable-line no-unused-vars
-
-        if (labels) {
+        
+        if (value === '0') {
+          return '';  // Return an empty line if the value is 0
+        }
+        
+	if (labels) {
           labels = labels.replace(/([^,]+?)="(.*?)",?/g, '<dt class="label-key" role="associationlistitemkey">$1</dt><dd class="label-value" role="associationlistitemvalue">$2</dd>')
           labels = `<dl class="labels" role="associationlist">${labels}</dl>`
         }
